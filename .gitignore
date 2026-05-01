@@ -1,0 +1,14 @@
+# Temp files
+temp_*.pdf
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+.env
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db

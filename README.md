@@ -22,6 +22,13 @@ and receive accurate, context-aware answers instantly.
 * 🔎 View retrieved chunks for transparency
 
 ---
+## 🌐 Live Demo
+
+🚀 Try the live application here:  
+👉 https://pharmacy-knowledge-assistant-rag-hrzmigfqojxyhdno88cq2l.streamlit.app/
+
+This is a fully deployed RAG-based Pharmacy Knowledge Assistant built using Streamlit, LangChain, FAISS, and OpenAI.
+---
 
 ## 🛠️ Tech Stack
 

@@ -15,12 +15,19 @@ load_dotenv(override=True)
 openai_api_key = os.getenv("OPENAI_API_KEY")
 
 st.title("💊 Pharmacy Knowledge Assistant")
+st.info("👈 Upload PDF documents from the sidebar to begin")
 
 with st.sidebar:
     st.title("⚙️ Settings")
     uploaded_files = st.file_uploader("📤 Upload Documents", accept_multiple_files=True, type="pdf")
 
-if uploaded_files:    
+if not uploaded_files:
+    st.warning("Please upload at least one PDF.")
+
+if uploaded_files: 
+    with st.spinner("Processing documents..."):
+        st.success("✅ Documents processed! You can now ask questions.") 
+  
     documents = []
 
     for uploaded_file in uploaded_files:
@@ -58,7 +65,10 @@ if uploaded_files:
     llm = ChatOpenAI(openai_api_key=openai_api_key)
     chain = prompt | llm | StrOutputParser()
 
-    question = st.text_input("Ask a question about the documents")
+    question = st.text_input("💬 Ask a question about your documents")
+
+    st.success("💡 Ready! Ask your question below.")
+    st.write(f"📄 Processed {len(documents)} documents")
 
     if question:
         # Step 1: Retrieve relevant docs

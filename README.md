@@ -3,6 +3,13 @@
 A simple **RAG (Retrieval-Augmented Generation)** application built with **Streamlit + LangChain + OpenAI + FAISS** to answer questions from uploaded PDF documents.
 
 ---
+## 🎯 Problem Statement
+
+Pharmacy documents are often large and difficult to search manually. 
+This application enables users to query medical and drug-related PDFs 
+and receive accurate, context-aware answers instantly.
+
+---
 
 ## 🚀 Features
 
@@ -23,6 +30,12 @@ A simple **RAG (Retrieval-Augmented Generation)** application built with **Strea
 * **Embeddings:** OpenAI Embeddings (`text-embedding-3-small`)
 * **Vector DB:** FAISS
 * **Framework:** LangChain
+
+---
+
+## 🧠 Architecture
+
+User → Streamlit UI → LangChain → FAISS Retriever → OpenAI LLM → Response
 
 ---
 

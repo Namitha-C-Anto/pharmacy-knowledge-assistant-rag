@@ -14,33 +14,35 @@ load_dotenv(override=True)
 
 openai_api_key = os.getenv("OPENAI_API_KEY")
 
-st.title("💊 Pharmacy Knowledge Assistant")
-st.info("👈 Upload PDF documents from the sidebar to begin")
+st.title("💊 Pharmacy Knowledge Assistant") 
 
 with st.sidebar:
     st.title("⚙️ Settings")
+    with open("sample_docs/standard treatment guidelines.pdf", "rb") as f:
+        st.download_button(
+            label="📥 Download Sample PDF",
+            data=f,
+            file_name="standard treatment guidelines.pdf",
+            mime="application/pdf"
+        )
+    
     uploaded_files = st.file_uploader("📤 Upload Documents", accept_multiple_files=True, type="pdf")
-
-if not uploaded_files:
-    st.warning("Please upload at least one PDF.")
-
-if uploaded_files: 
-    with st.spinner("Processing documents..."):
-        st.success("✅ Documents processed! You can now ask questions.") 
-  
-    documents = []
-
-    for uploaded_file in uploaded_files:
-        temp_pdf = f"temp_{uploaded_file.name}" 
-        with open(temp_pdf, "wb") as file:
-            file.write(uploaded_file.getvalue())
-            file_name = uploaded_file.name
-
-            #Use document loader and extend the documents list
-            loader = PyPDFLoader(temp_pdf)
-            loaded_docs = loader.load()
-            documents.extend(loaded_docs)
  
+if uploaded_files: 
+    with st.spinner("⏳ Processing documents..."):
+        documents = []
+
+        for uploaded_file in uploaded_files:
+            temp_pdf = f"temp_{uploaded_file.name}" 
+            with open(temp_pdf, "wb") as file:
+                file.write(uploaded_file.getvalue())
+                file_name = uploaded_file.name
+
+                #Use document loader and extend the documents list
+                loader = PyPDFLoader(temp_pdf)
+                loaded_docs = loader.load()
+                documents.extend(loaded_docs)
+    
     os.remove(temp_pdf)
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     splitted_docs = text_splitter.split_documents(documents)
@@ -65,11 +67,11 @@ if uploaded_files:
     llm = ChatOpenAI(openai_api_key=openai_api_key)
     chain = prompt | llm | StrOutputParser()
 
+    st.success("✅ Documents processed! 💡 You can now ask questions.")
+    st.write(f"📄 Processed {len(documents)} pages")
+
     question = st.text_input("💬 Ask a question about your documents")
-
-    st.success("💡 Ready! Ask your question below.")
-    st.write(f"📄 Processed {len(documents)} documents")
-
+ 
     if question:
         # Step 1: Retrieve relevant docs
         docs = retriever.invoke(question)
@@ -98,4 +100,6 @@ if uploaded_files:
                 st.write(doc.page_content[:300] + "...")
                 st.write("---")
 
-
+else:
+     
+    st.info("👈 Upload PDF documents from the sidebar to begin")

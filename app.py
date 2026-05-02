@@ -64,7 +64,7 @@ if uploaded_files:
         ]
     ) 
 
-    llm = ChatOpenAI(openai_api_key=openai_api_key)
+    llm = ChatOpenAI(model="gpt-4o-mini", openai_api_key=openai_api_key)
     chain = prompt | llm | StrOutputParser()
 
     st.success("✅ Documents processed! 💡 You can now ask questions.")
